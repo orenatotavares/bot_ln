@@ -23,9 +23,12 @@ load_dotenv()
 
 
 # Chaves da API
-api_key = "GEWGqGDURvIzUwAdQo9o8OWReqaUemuwCtKwdSopz3A="
-api_secret = "CTzzJ9cHlTCFlUJlk8J93VqPggKJBWr6voUQDzjKWuUZ4nlDUjMTZq1pDN3IUuIEtuRZRvZCkRznj6b3dnW/4A=="
-passphrase = "renatoteste"
+api_key = os.getenv("API_KEY")
+api_secret = os.getenv("API_SECRET")
+passphrase = os.getenv("PASSPHRASE")
+
+if isinstance(api_secret, str):
+    api_secret = api_secret.encode()
 
 if not api_key or not api_secret or not passphrase:
     st.error("As chaves da API não foram carregadas. Verifique o arquivo .env")
@@ -125,3 +128,4 @@ if not df.empty:
     st.dataframe(formatar_tabela(df_formatado), use_container_width=True)
 else:
     st.warning("Nenhuma ordem encontrada ou erro na API.")
+
