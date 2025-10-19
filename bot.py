@@ -34,7 +34,7 @@ if not api_key or not api_secret or not passphrase:
     st.error("As chaves da API não foram carregadas. Verifique o arquivo .env")
     st.stop()
 
-api_secret = api_secret.encode()  # transforma em bytes
+
 
 # Função para gerar assinatura
 def generate_signature(timestamp, method, path, query_string, secret):
@@ -128,4 +128,5 @@ if not df.empty:
     st.dataframe(formatar_tabela(df_formatado), use_container_width=True)
 else:
     st.warning("Nenhuma ordem encontrada ou erro na API.")
+
 
