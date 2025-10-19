@@ -54,8 +54,8 @@ def get_current_btc_price():
         response.raise_for_status()
         data = response.json()
         # Verifica se a chave 'last' existe
-        if 'last' in data:
-            return float(data['last'])
+        if 'lastPrice' in data:
+            return float(data['lastPrice'])
         else:
             st.error(f"Resposta inesperada da API: {data}")
             return None
@@ -73,3 +73,4 @@ if st.button("🔄 Atualizar preço BTC"):
 
 if st.session_state.btc_price:
     st.metric("💲 Preço Atual BTC", f"${st.session_state.btc_price:,.2f}")
+
