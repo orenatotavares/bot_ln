@@ -81,7 +81,7 @@ if st.button("🔄 Atualizar dados"):
 # Inicialização ou uso do estado existente
 if "df" not in st.session_state:
     st.session_state.df = get_closed_positions()
-df = process_data(st.session_state.df)  # Processa os dados após inicialização ou atualização
+
 
 # Exibição
 if not df.empty:
@@ -128,5 +128,6 @@ if not df.empty:
     st.dataframe(formatar_tabela(df_formatado), use_container_width=True)
 else:
     st.warning("Nenhuma ordem encontrada ou erro na API.")
+
 
 
