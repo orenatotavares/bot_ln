@@ -71,7 +71,40 @@ def get_closed_positions():
         st.error(f"Erro ao acessar a API: {e}")
         return pd.DataFrame()
 
-# [O resto do código permanece igual, sem alterações]
+def get_current_btc_price():
+    base_url = 'https://api.testnet4.lnmarkets.com'
+    path = '/v2/futures/ticker'
+    method = 'GET'
+    params = {'market': 'BTC-PERP'}
+    query_string = urllib.parse.urlencode(params)
+    timestamp = str(int(time.time() * 1000))
+    signature = generate_signature(timestamp, method, '/v2/futures/ticker', query_string, api_secret)
+
+    headers = {
+        'LNM-ACCESS-KEY': api_key,
+        'LNM-ACCESS-SIGNATURE': signature,
+        'LNM-ACCESS-PASSPHRASE': passphrase,
+        'LNM-ACCESS-TIMESTAMP': timestamp,
+    }
+
+    try:
+        response = requests.get(f"{base_url}{path}?{query_string}", headers=headers)
+        response.raise_for_status()
+        data = response.json()
+        return float(data['last'])
+    except requests.RequestException as e:
+        st.error(f"Erro ao obter preço BTC: {e}")
+        return None
+
+if 'btc_price' not in st.session_state:
+    st.session_state.btc_price = get_current_btc_price()
+
+if st.button("🔄 Atualizar preço BTC"):
+    st.session_state.btc_price = get_current_btc_price()
+
+if st.session_state.btc_price:
+    st.metric("💲 Preço Atual BTC", f"${st.session_state.btc_price:,.2f}")
+
 
 # Carregamento e processamento dos dados
 if st.button("🔄 Atualizar dados"):
@@ -128,6 +161,7 @@ if not df.empty:
     st.dataframe(formatar_tabela(df_formatado), use_container_width=True)
 else:
     st.warning("Nenhuma ordem encontrada ou erro na API.")
+
 
 
 
