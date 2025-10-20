@@ -5,3 +5,10 @@ plotly
 requests
 python-dotenv
 pytz
+json
+time
+hmac
+base64
+hashlib
+urllib.parse
+os
